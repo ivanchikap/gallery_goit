@@ -9,6 +9,7 @@ const rightArrow = document.querySelector('#arrow-right');
 let imageSrc;
 let imageIndex=0;
 
+
 const createLiTemplate = (galleryItem) => {
     const li = document.createElement('li');
     li.classList.add('gallery__item');
@@ -42,7 +43,6 @@ function onModalOpen(e) {
     }
     imageSrc = e.target.src;
     imageIndex = Number(e.target.dataset.index);
-    console.log(imageIndex);
     openModal(imageIndex);
     window.addEventListener('keyup', onKeyPress);
 }
@@ -52,14 +52,21 @@ function openModal(imageIndex) {
     lightbox.classList.add('is-open');
 }
 function closeModal(e) {
+    if (e.target.nodeName === 'SPAN') {
+        return;
+    }
     if (e.target.nodeName !== 'IMG' && lightbox.classList.contains('is-open') && e.target.nodeName !== 'SPAN') {
         lightbox.classList.remove('is-open');
         lightboxImg.src= '';
     }
+
     window.removeEventListener('keyup', onKeyPress);
+
+
 }
 
 function onKeyPress(e) {
+    console.log('keyPress');
     if (e.key === 'Escape') {
         closeModal(e);
     }
@@ -73,9 +80,9 @@ function onKeyPress(e) {
 
 function listRight() {
     if (imageIndex + 2 > gallery.length) {
-    console.log('Вправо дальше нельзя');
-    return
-}
+        console.log('Вправо дальше нельзя');
+        return
+    }
     imageIndex += 1;
     openModal(imageIndex);
 }
@@ -95,5 +102,3 @@ lightbox.addEventListener('click', closeModal);
 
 leftArrow.addEventListener('click', listLeft);
 rightArrow.addEventListener('click', listRight);
-
-
